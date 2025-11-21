@@ -10,13 +10,14 @@ public class RSAApp extends JFrame {
     private final JTextArea privateKeyArea = new JTextArea();
     private final JTextArea inputArea = new JTextArea();
     private final JTextArea cipherArea = new JTextArea();
+    private final JTextArea decryptedArea = new JTextArea();
     private final JLabel statusLabel = new JLabel("Готово до роботи.");
 
     private final RSAService rsaService = new RSAService();
     private RSAKeyPair currentKeyPair;
 
     public RSAApp() {
-        super("Лабораторна робота 2 Шифрування RSA");
+        super("RSA лабораторна робота №2");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
         setLocationRelativeTo(null);
@@ -28,6 +29,7 @@ public class RSAApp extends JFrame {
 
         publicKeyArea.setEditable(false);
         privateKeyArea.setEditable(false);
+        decryptedArea.setEditable(false);
         cipherArea.setLineWrap(true);
         inputArea.setLineWrap(true);
     }
@@ -53,7 +55,7 @@ public class RSAApp extends JFrame {
         keysPanel.add(wrapWithTitledScroll(publicKeyArea, "Відкритий ключ (n, e)"));
         keysPanel.add(wrapWithTitledScroll(privateKeyArea, "Закритий ключ (n, d)"));
 
-        JPanel actionsPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        JPanel actionsPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         actionsPanel.setBorder(new EmptyBorder(10, 5, 10, 10));
 
         JPanel encryptPanel = new JPanel(new BorderLayout(5, 5));
@@ -70,6 +72,7 @@ public class RSAApp extends JFrame {
 
         actionsPanel.add(encryptPanel);
         actionsPanel.add(decryptPanel);
+        actionsPanel.add(wrapWithTitledScroll(decryptedArea, "Розшифроване повідомлення"));
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, keysPanel, actionsPanel);
         splitPane.setResizeWeight(0.45);
@@ -112,6 +115,7 @@ public class RSAApp extends JFrame {
         try {
             String cipherText = rsaService.encrypt(inputArea.getText(), currentKeyPair);
             cipherArea.setText(cipherText);
+            decryptedArea.setText("");
             updateStatus("Повідомлення зашифровано.", true);
         } catch (Exception ex) {
             updateStatus("Помилка шифрування: " + ex.getMessage(), false);
@@ -125,7 +129,7 @@ public class RSAApp extends JFrame {
         }
         try {
             String plainText = rsaService.decrypt(cipherArea.getText().trim(), currentKeyPair);
-            inputArea.setText(plainText);
+            decryptedArea.setText(plainText);
             updateStatus("Шифртекст розшифровано.", true);
         } catch (Exception ex) {
             updateStatus("Помилка розшифрування: " + ex.getMessage(), false);
