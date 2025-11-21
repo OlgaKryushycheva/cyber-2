@@ -16,7 +16,7 @@ public class RSAApp extends JFrame {
     private RSAKeyPair currentKeyPair;
 
     public RSAApp() {
-        super("RSA лабораторна робота №2");
+        super("Лабораторна робота 2 Шифрування RSA");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
         setLocationRelativeTo(null);
